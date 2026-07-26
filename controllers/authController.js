@@ -1,6 +1,7 @@
 const User = require("../models/user")
 const bcrypt = require("bcrypt");
-const { SALT_ROUNDS } = require("../utils/config");
+const { SALT_ROUNDS, JWT_SECRATE, ENV } = require("../utils/config");
+const jwt = require("jsonwebtoken")
 
 const authController = {
     // register
@@ -40,7 +41,39 @@ const authController = {
     // login
     login: async (request, response) => {
        try{
-        return response.status(200).json({message: "login rout" })
+         // get email and password from the request body
+         const { email, password } = request.body;
+
+         // check if user with the email exists in the databse
+         const user = await User.findOne({email})
+
+         // if not, return 400 response with message "Invalid email user does not exist"
+         if(!user){
+            return response.status(400).json({message: "Invalid email user does not exist"})
+         }
+
+         // if yes, compare the password with the hashed pssword in the datsbase using bcrypt
+        const passswordMatch = await bcrypt.compare(password, user.password)
+
+         // if not match, return a 400 response with meessage "invalid passsword"
+         if(!passswordMatch){
+            return response.status(400).json({message: "Invalid Password"})
+         }
+
+         // genrate a jwt token for the user
+         const token = await jwt.sign({ userId: user._id}, JWT_SECRATE, {expiresIn: "1h"}) 
+
+         // set the cookie with the token
+         response.cookie('token', token, {
+             httpOnly:true,
+             secure: ENV === 'production', //set secure flag only in production
+             sameSite: ENV === "production" ? "none": 'lax', // set sameSite flag based enviroment
+             maxAge: 3600000 //set cookie expiration time in 1 hour
+
+         })
+         
+         // return a success response with the token
+        return response.status(200).json({message: "User login successfuly" })
        }catch(e) {
         return response.status(500).json({message: "", error:e.message})
        }
