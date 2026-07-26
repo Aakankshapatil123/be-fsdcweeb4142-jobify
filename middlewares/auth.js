@@ -45,7 +45,7 @@ const allowRoles = (roles) => {
 
     // check if user's is includes in the  allow roles
     // if not, return a 403 response with message "Frobidden:you dont have the required eole(s) to the access this resource"
-     if(!incluses(user.roles)){
+     if(!roles.includes(user.role)){
         return response.status(403).json({message: "Frobidden:you dont have the required eole(s) to the access this resource"})
      }
 
