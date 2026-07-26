@@ -82,7 +82,14 @@ const authController = {
     // me
     me: async (request, response) => {
        try{
-       return response.status(200).json({message: "me rout",})
+         // get user id from the requestr object
+         const userId = request.userId
+
+         // find the user in the database using user id (make sure to exclude the password field from the response)
+          const user = await User.findById(userId).select('-password -__v');
+
+         // send the user object as a response
+       return response.status(200).json(user);
        }catch(e) {
         return response.status(500).json({message: "", error:e.message})
        }
@@ -91,7 +98,14 @@ const authController = {
     // logout
     logout: async (request, response) => {
        try{
-        return response.status(200).json({message: "logout rout" })
+         // clear the cookie with the token
+            response.clearCookie('token', {
+            httpOnly:true,
+            secure: ENV === 'production', //set secure flag only in production
+            sameSite: ENV === "production" ? "none": 'lax', // set sameSite flag based enviroment
+
+         })
+        return response.status(200).json({message: "User logout Successfuly" })
        }catch(e) {
         return response.status(500).json({message: "", error:e.message})
        }
