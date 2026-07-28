@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
 
     role: {
         type: String,
-        enum: ['user', 'admin', 'recructer'],
+        enum: ['user', 'admin', 'recruiter'], 
         default: 'user'
     },
 
@@ -59,6 +59,11 @@ const userSchema = new mongoose.Schema({
     isVerified: {
         type: Boolean,
         default: false
+    },
+    assignedCompany: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Company',
+        default: null
     }
 
 }, {timestamps: true})
