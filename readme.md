@@ -81,5 +81,75 @@ Sample Company:
 
 ```
 
+Job Samples:
+
+```json
+{
+  "title": "Fronted Developer",
+  "description": "We are loking skils frontend Developer to join our team. The ideal canditdate will have experince with react and modern web delopment practices",
+  "location": "San Francios CA",
+  "company": "Tech Solution Inc",
+  "salary": {
+        "min": 80000,
+        "max": 100000
+  },
+  "jobType": "Full-time",
+  "experinceLevel": "Mid",
+  "skils": ["javaScript", "React", "HTML", "CSS"],
+  "applicationDeadline": "2024-06-30",
+}
+```
 
 
+```json
+{
+  "title": "Data Scientist",
+  "description": "Join our team as Data Scientist to work on cutting-edge AI and machine learning projects. Experince with Python and data analysis is required .",
+  "location": "Austin TX",
+  "company": "Green Energy Crop.",
+  "salary": {
+    "min": 95000,
+    "max": 130000
+  },
+  "jobType": "Full-time",
+  "experinceLevel": "Mid",
+  "skils": ["Python", "R", "Machine Learing", "Data Analysis"],
+  "postedDate": "2024-08-01"
+}
+```
+
+```json
+{
+  "title": "Backend Developer",
+  "description": "We are seeking a talented Backend Developer to work on our server-side applications. The candidate should have experince with Node.js and Express.",
+  "location": "New York NY",
+  "company": "Innovatech Ltd",
+  "salary": {
+        "min": "90000",
+        "max": "120000"
+  },
+  "jobType": "Full-time",
+  "experinceLevel":"Senior",
+  "skils": ["Node.js", "Express", "MongoDB", "REST APIs"],
+  "applicationDeadline": "2024-07-15"
+}
+``
+
+```json
+
+{
+  "title": "UI/UX Designer",
+  "description": "We are seeking a creative UI/UX Designer to design user-friendly intefaces for our web mobile applications . The candidate should have a strong portfolio showcasing their design skils.",
+  "location": "Boston MA",
+  "company": "HealthTech Solutions",
+  "salary": {
+        "min": "70000",
+        "max": "90000"
+  },
+  "jobType": "Full-time",
+  "experinceLevel": "Mid",
+  "skils": ["Adode XD", "Figma", "Sketch", "User Research"],
+  "applicationDeadline": "2024-07-20"
+}
+
+```
