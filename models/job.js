@@ -59,7 +59,7 @@ const jobSchema = new mongoose.Schema({
         type:Date
     },
 
-   postedBy:{
+    postedBy:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User",
         required:true
