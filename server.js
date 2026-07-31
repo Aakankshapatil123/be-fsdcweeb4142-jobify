@@ -3,6 +3,7 @@ const { MONGODB_URL, PORT, HOST } = require("./utils/config");
 const app = require("./app");
 const { error } = require("node:console");
 
+
 // connected to the mongodb databases
 mongoose
 .connect(MONGODB_URL)

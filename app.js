@@ -5,9 +5,14 @@ const authRouter = require("./routers/authRouters");
 const companyRouter = require("./routers/companyRouter");
 const jobRouter = require("./routers/jonRouter");
 const applicationRouter = require("./routers/applicationRouter");
+const path = require("path");
+const fs = require('fs')
 
 // create express app
 const app = express();
+
+// enable static files for uploads
+app.use('/uploads', express.static(path.join(__dirname,'uploads')));
 
 // parse cookies
 app.use(cookieParser());
