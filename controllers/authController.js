@@ -1,7 +1,8 @@
 const User = require("../models/user")
 const bcrypt = require("bcrypt");
 const { SALT_ROUNDS, JWT_SECRATE, ENV } = require("../utils/config");
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const sendEmail = require("../utils/email");
 
 const authController = {
     // register
@@ -30,6 +31,14 @@ const authController = {
  
            // save the user object to the database
            await newUser.save();
+
+         //   send a welcome email to the user (optional)
+         await sendEmail(email, "Welcome to Job Portal", `Hi ${name},\n
+            \n
+            Thank You for registering on our job portal. we are excited to have you on board!\n
+            \n
+            Best regards,\n
+            Job Portal Team`);
 
            // return a success responce
            return response.status(200).json({message: "User register successfuly" })
@@ -96,8 +105,8 @@ const authController = {
     },
      
     // logout
-    logout: async (request, response) => {
-       try{
+      logout: async (request, response) => {
+        try{
          // clear the cookie with the token
             response.clearCookie('token', {
             httpOnly:true,
@@ -110,6 +119,47 @@ const authController = {
         return response.status(500).json({message: "", error:e.message})
        }
     },
+
+   uploadProfilePicture: async (req, res) => {
+      try {
+        if (!req.file) {
+            return res.status(400).json({ message: 'No file uploaded' });
+        }
+
+        const user = await User.findByIdAndUpdate(req.userId, { profilePeture: req.file.path }, {
+            new: true }).select('-password');
+
+        res.status(200).json({ success: true, message: 'Profile picture uploaded successfully', user });
+      } catch (error) {
+        res.status(500).json({ success: false, message: 'Error uploading profile picture', error: error.message });
+      }
+   },
+
+   uploadResume: async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ message: 'No file uploaded' });
+        }
+
+        const user = await User.findByIdAndUpdate(
+            req.userId,
+            { resume: req.file.path },
+            { new: true }
+        ).select('-password');
+
+        res.status(200).json({
+            success: true,
+            message: 'Resume uploaded successfully',
+            user
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Error uploading resume',
+            error: error.message
+        });
+    }
+}
 }
 
 module.exports = authController;
