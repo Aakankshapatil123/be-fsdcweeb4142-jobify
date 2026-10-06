@@ -46,11 +46,13 @@ const adminController = {
     // to get all company
      getAllCompany: async (request, response) => {
         try{
+          
           // get all tge companies from the database and stroe the result in a veriable
-          const companies = await Company.find();
+          // const companies = await Company.find();
+          const companies = await Company.find().populate('createdBy', 'name email');
 
           // return a 200 status code with a message "Companies retrieved successfuly" adn the result
-          return response.status(200).json({message: "Companies retrieved successfuly", result:companies})
+          return response.status(200).json({ companies})
         }catch(e) {
              return response.status(500).json({message:e.message,})
         }
@@ -125,6 +127,8 @@ const adminController = {
         }
     },
 
+    
+
     // to create recruter
      createRecruter: async (request, response) => {
         try{
@@ -187,30 +191,52 @@ const adminController = {
     },
 
     // to get all recructor
+    // getAllRecruter: async (request, response) => {
+    //     try{
+    //       // get the compant id from the request params
+    //       const { id } = request.params
+
+    //       if (!id || id === 'recruiters') {
+    //             const allRecruiters = await User.find({ role: 'recruiter' }).populate('assignedCompany', 'name');
+    //             return response.status(200).json({ message: "All recruiters retrieved successfully", result: allRecruiters });
+    //         }
+
+    //       // check if the company exits with the companyId provided in the request params
+    //       const company = await Company.findById(id)
+
+    //       // if no, return 404 status code with a message "Company not found"
+    //       if(!company){
+    //         return response.status(404).json({message: "Company not found"})
+    //       }
+
+    //       // get all the recruiters from the databse using the companyId and store result in a variable
+    //       const recruiters = await User.find({ assignedCompany: id, role: 'recruiter'}).select('-password -__v');
+
+    //       console.log(await User.find({ role: "recruiter" }));
+
+    //       // return a 200 status code with a message "Recruiters retrieved successfuly" and the result
+    //       return response.status(200).json({ recruiters })
+    //     }catch(e) {
+    //          return response.status(500).json({message:e.message,})
+    //     }
+    // }
+
     getAllRecruter: async (request, response) => {
-        try{
-          // get the compant id from the request params
-          const { id } = request.params
+    try {
+        const recruiters = await User.find({ role: "recruiter" })
+            .select("-password -__v")
+            .populate("assignedCompany", "name");
 
-          // check if the company exits with the companyId provided in the request params
-          const company = await Company.findById(id)
+        return response.status(200).json({
+            recruiters
+        });
 
-          // if no, return 404 status code with a message "Company not found"
-          if(!company){
-            return response.status(404).json({message: "Company not found"})
-          }
-
-          // get all the recruiters from the databse using the companyId and store result in a variable
-          const recruiters = await User.find({ assignedCompany: id, role: 'recruiter'}).select('-password -__v');
-
-          console.log(await User.find({ role: "recruiter" }));
-
-          // return a 200 status code with a message "Recruiters retrieved successfuly" and the result
-          return response.status(200).json({message: "Recruiters retrievd sucessfuly", result:recruiters})
-        }catch(e) {
-             return response.status(500).json({message:e.message,})
-        }
+    } catch (e) {
+        return response.status(500).json({
+            message: e.message
+        });
     }
+}
 
 }
 
