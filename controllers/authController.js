@@ -148,6 +148,56 @@ const authController = {
       }
    },
 
+   updateProfile: async (request, response) => {
+  try {
+    const userId = request.userId;
+
+    const {
+      name,
+      phone,
+      bio,
+      skils,
+      experience,
+      location
+    } = request.body;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        name,
+        phone,
+        bio,
+        skils,
+        experience,
+        location
+      },
+      {
+        new: true,
+        runValidators: true
+      }
+    ).select("-password");
+
+    if (!updatedUser) {
+      return response.status(404).json({
+        message: "User not found"
+      });
+    }
+
+    return response.status(200).json({
+      message: "Profile updated successfully",
+      user: updatedUser
+    });
+
+  } catch (error) {
+    console.error("Update profile error:", error);
+
+    return response.status(500).json({
+      message: "Failed to update profile",
+      error: error.message
+    });
+  }
+},
+
    uploadResume: async (req, res) => {
     try {
         if (!req.file) {

@@ -11,7 +11,7 @@ companyRouter.use(allowRoles(['admin']));
 companyRouter.post("/", createCompany);
 companyRouter.get("/", getAllCompany);
 
-companyRouter.get("/recruiter", getAllRecruter);
+companyRouter.get("/recruiters", getAllRecruter);
 
 companyRouter.get("/:id", getCompanyByID);
 companyRouter.put("/:id", updateCompany);
