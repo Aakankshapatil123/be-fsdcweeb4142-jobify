@@ -7,12 +7,19 @@ const jobRouter = require("./routers/jonRouter");
 const applicationRouter = require("./routers/applicationRouter");
 const path = require("path");
 const fs = require('fs')
+const cros = require('cors')
 
 // create express app
 const app = express();
 
 // enable static files for uploads
 app.use('/uploads', express.static(path.join(__dirname,'uploads')));
+
+// enable CROS
+app.use(cros({
+    origin: 'http://localhost:5173', //replace with your frontend URL
+    credentials: true, //allow cookies to be send
+}))
 
 // parse cookies
 app.use(cookieParser());

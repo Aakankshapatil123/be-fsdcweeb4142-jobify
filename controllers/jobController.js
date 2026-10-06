@@ -1,7 +1,5 @@
-const  express = require("express");
 const Job = require("../models/job");
 const Application = require("../models/application");
-const application = require("../models/application");
 
 const jobController = {
     getAllJobs: async (request, response) => {

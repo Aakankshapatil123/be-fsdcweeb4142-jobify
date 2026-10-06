@@ -51,7 +51,7 @@ const jobSchema = new mongoose.Schema({
     
     company:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"User",
+        ref:"Company",
         required:true
     },
 

@@ -10,10 +10,13 @@ companyRouter.use(allowRoles(['admin']));
 
 companyRouter.post("/", createCompany);
 companyRouter.get("/", getAllCompany);
+
+companyRouter.get("/recruiter", getAllRecruter);
+
 companyRouter.get("/:id", getCompanyByID);
 companyRouter.put("/:id", updateCompany);
 companyRouter.delete("/:id", deleteCompany);
-companyRouter.post("/:id/recruters", createRecruter);
-companyRouter.get("/:id/recruters", getAllRecruter);
+companyRouter.post("/:id/recruiter", createRecruter);
+
 
 module.exports = companyRouter;  

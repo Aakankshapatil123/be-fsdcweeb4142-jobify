@@ -4,6 +4,7 @@ const { SALT_ROUNDS, JWT_SECRATE, ENV } = require("../utils/config");
 const jwt = require("jsonwebtoken");
 const sendEmail = require("../utils/email");
 
+
 const authController = {
     // register
     register: async (request, response) => {
@@ -79,10 +80,22 @@ const authController = {
              sameSite: ENV === "production" ? "none": 'lax', // set sameSite flag based enviroment
              maxAge: 3600000 //set cookie expiration time in 1 hour
 
-         })
+         });
+
+        //  return a success responce with the token
+        return response.status(200).json({
+          message: "User logged in Successfully",
+          user: {
+            id:user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            assignedCompany: user.assignedCompany || null
+          }
+        });
          
          // return a success response with the token
-        return response.status(200).json({message: "User login successfuly" })
+        // return response.status(200).json({message: "User login successfuly" })
        }catch(e) {
         return response.status(500).json({message: "", error:e.message})
        }
@@ -98,7 +111,7 @@ const authController = {
           const user = await User.findById(userId).select('-password -__v');
 
          // send the user object as a response
-       return response.status(200).json(user);
+       return response.status(200).json({user});
        }catch(e) {
         return response.status(500).json({message: "", error:e.message})
        }
