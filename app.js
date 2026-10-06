@@ -16,10 +16,26 @@ const app = express();
 app.use('/uploads', express.static(path.join(__dirname,'uploads')));
 
 // enable CROS
+// app.use(cros({
+//     origin: 'http://localhost:5173', //replace with your frontend URL
+//     credentials: true, //allow cookies to be send
+// }))
+
+const allowedOrigins = [
+    'http://localhost:5173',
+    'https://fe-fsdcwee4142-jobify.netlify.app'
+];
+
 app.use(cros({
-    origin: 'http://localhost:5173', //replace with your frontend URL
-    credentials: true, //allow cookies to be send
-}))
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true
+}));
 
 // parse cookies
 app.use(cookieParser());
